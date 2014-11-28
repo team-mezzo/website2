@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  raw_amount: 1
+  processed_amount: 1
+  description: MyText
+  image_url: MyString
+
+two:
+  raw_amount: 1
+  processed_amount: 1
+  description: MyText
+  image_url: MyString

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Pickup start:</strong>
+  <%= @donation.pickup_start %>
+</p>
+
+<p>
+  <strong>Pickup end:</strong>
+  <%= @donation.pickup_end %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @donation.status %>
+</p>
+
+<%= link_to 'Edit', edit_donation_path(@donation) %> |
+<%= link_to 'Back', donations_path %>

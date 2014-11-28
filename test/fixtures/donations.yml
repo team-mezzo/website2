@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pickup_start: 2014-11-26 09:35:51
+  pickup_end: 2014-11-26 09:35:51
+  status: MyString
+
+two:
+  pickup_start: 2014-11-26 09:35:51
+  pickup_end: 2014-11-26 09:35:51
+  status: MyString
