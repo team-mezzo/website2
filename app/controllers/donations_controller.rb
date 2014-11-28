@@ -5,11 +5,29 @@ class DonationsController < ApplicationController
   # GET /donations.json
   def index
     @donations = Donation.all
+
+    # return json object
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { 
+        @donations.each do |donation|
+          # TODO: ONLY RETURNS FIRST DONATION. IF REMOVE AND RETURN, GET DOUBLE RENDER ERROR
+          render json: donation.to_json and return 
+        end
+      }
+    end
   end
 
   # GET /donations/1
   # GET /donations/1.json
   def show
+    @donation = Donation.find(params[:id])
+
+    # return json object
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @donation.to_json }
+    end
   end
 
   # GET /donations/new
@@ -69,6 +87,7 @@ class DonationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def donation_params
-      params.require(:donation).permit(:pickup_start, :pickup_end, :status)
+      params.require(:donation).permit(:pickup_start, :pickup_end, :status, 
+                                       food_portion_attributes: [:raw_amount, :processed_amount, :description, :image_url])
     end
 end

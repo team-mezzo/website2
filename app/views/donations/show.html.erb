@@ -15,5 +15,25 @@
   <%= @donation.status %>
 </p>
 
+<p>
+  <strong>Raw Amount:</strong>
+  <%= @donation.food_portion.raw_amount %> 
+</p>
+
+<p>
+  <strong>Processed Amount:</strong>
+  <%= @donation.food_portion.processed_amount %> 
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @donation.food_portion.description %> 
+</p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @donation.food_portion.image_url %> 
+</p>
+
 <%= link_to 'Edit', edit_donation_path(@donation) %> |
 <%= link_to 'Back', donations_path %>

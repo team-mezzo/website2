@@ -1,4 +1,4 @@
-<%= form_for(@donation) do |f| %>
+<%= form_for(setup_donation(@donation)) do |f| %>
   <% if @donation.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@donation.errors.count, "error") %> prohibited this donation from being saved:</h2>
@@ -13,16 +13,32 @@
 
   <div class="field">
     <%= f.label :pickup_start %><br>
-    <%= f.datetime_select :pickup_start %>
+    <%= f.datetime_select :pickup_start, :ampm => true, :minute_step => 10 %>
   </div>
   <div class="field">
     <%= f.label :pickup_end %><br>
-    <%= f.datetime_select :pickup_end %>
+    <%= f.datetime_select :pickup_end, :ampm => true, :minute_step => 10 %>
   </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.text_field :status %>
-  </div>
+
+  <%= f.fields_for :food_portion do |builder| %>
+    <div class="field">
+      <%= builder.label :raw_amount, "Raw Amount:" %>
+      <%= builder.text_field :raw_amount, size: 5 %> lbs.
+    </div>
+    <div class="field">
+      <%= builder.label :processed_amount, "Processed Amount:" %>
+      <%= builder.text_field :processed_amount, size: 5 %> lbs.
+    </div>
+    <div class="field">
+      <%= builder.label :description, "Description" %><br>
+      <%= builder.text_area :description, rows: 3 %>
+    </div>
+    <div class="field">
+      <%= builder.label :image_url, "Image" %>
+      <%= builder.text_field :image_url %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>
