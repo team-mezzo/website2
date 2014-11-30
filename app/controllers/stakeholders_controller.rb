@@ -28,7 +28,7 @@ class StakeholdersController < ApplicationController
 
     respond_to do |format|
       if @stakeholder.save
-        format.html { redirect_to @stakeholder, notice: 'Stakeholder was successfully created.' }
+        format.html { redirect_to @stakeholder, notice: 'You signed up successfully' }
         format.json { render :show, status: :created, location: @stakeholder }
       else
         format.html { render :new }

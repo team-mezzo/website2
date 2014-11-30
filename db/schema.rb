@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141128181854) do
+ActiveRecord::Schema.define(version: 20141130193722) do
 
   create_table "donations", force: true do |t|
     t.datetime "pickup_start"
@@ -49,6 +49,9 @@ ActiveRecord::Schema.define(version: 20141128181854) do
     t.string   "loginable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "password_digest"
   end
+
+  add_index "stakeholders", ["email"], name: "index_stakeholders_on_email", unique: true
 
 end
