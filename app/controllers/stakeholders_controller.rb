@@ -28,6 +28,7 @@ class StakeholdersController < ApplicationController
 
     respond_to do |format|
       if @stakeholder.save
+        log_in @stakeholder # logs in new user 
         format.html { redirect_to @stakeholder, notice: 'You signed up successfully' }
         format.json { render :show, status: :created, location: @stakeholder }
       else
@@ -69,6 +70,6 @@ class StakeholdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def stakeholder_params
-      params[:stakeholder]
+      params.require(:stakeholder).permit(:email, :password, :password_confirmation)
     end
 end

@@ -1,0 +1,112 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+/* ==================================
+========== COLOR VARIABLES ==========
+===================================== */
+$charcoal: #514B4C;
+$lightGreen: #ACCF5E;
+$tan: #FFF6CB;
+$darkBlue: #292F37;
+
+/* ==================================
+============== GENERAL ==============
+===================================== */
+body {
+  margin: 0;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* general links */
+a {
+	text-decoration: none; // no underline
+  color: darken($lightGreen, 10%);
+
+  &.selected, &:hover {
+    color: darken($lightGreen, 20%);
+  }
+}
+
+/* ==================================
+=========== NAVBAR HEADER ===========
+===================================== */
+nav {
+  width: 100%;
+  height: auto;
+  background-color: $charcoal;
+  height: 50px;
+
+  ul {
+    margin: 0;
+    padding: 0 10px;
+
+    li {
+      list-style: none; // no bullets
+      display: inline-block;
+
+      a {
+        line-height: 50px;
+        padding: 25px 20px;
+        height: 100%;
+        color: lighten($charcoal, 60%);
+      }
+
+      &.selected, &:hover {
+        background-color: darken($charcoal, 10%);
+        a { color: $lightGreen; }
+      }
+    }
+  }
+}
+
+/* ==================================
+====== NOTICES (from scaffold) ======
+===================================== */
+#notice {
+  color: green;
+}
+
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#error_explanation {
+  width: 450px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+  h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    margin-bottom: 0px;
+    background-color: #c00;
+    color: #fff;
+  }
+  ul li {
+    font-size: 12px;
+    list-style: square;
+  }
+}

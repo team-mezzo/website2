@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
+  get 'sessions/new'
+
   resources :recipients
 
   resources :donors
 
   resources :stakeholders
+  get    'signup' => 'stakeholders#new'
+  get    'login'  => 'sessions#new'
+  post   'login'  => 'sessions#create'
+  delete 'logout' => 'sessions#destroy'
 
   resources :donations
 
