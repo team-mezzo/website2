@@ -1,5 +1,7 @@
 class StakeholdersController < ApplicationController
   before_action :set_stakeholder, only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user,  only: [:index, :edit, :update, :destroy] # can't do these if not logged in
+  before_action :correct_user,    only: [:edit, :update] # can't edit other people's profiles
 
   # GET /stakeholders
   # GET /stakeholders.json
@@ -28,7 +30,7 @@ class StakeholdersController < ApplicationController
 
     respond_to do |format|
       if @stakeholder.save
-        log_in @stakeholder # logs in new user 
+        log_in @stakeholder # logs in new user
         format.html { redirect_to @stakeholder, notice: 'You signed up successfully' }
         format.json { render :show, status: :created, location: @stakeholder }
       else
@@ -43,7 +45,7 @@ class StakeholdersController < ApplicationController
   def update
     respond_to do |format|
       if @stakeholder.update(stakeholder_params)
-        format.html { redirect_to @stakeholder, notice: 'Stakeholder was successfully updated.' }
+        format.html { redirect_to @stakeholder, notice: 'Profile updated.' }
         format.json { render :show, status: :ok, location: @stakeholder }
       else
         format.html { render :edit }
@@ -57,7 +59,7 @@ class StakeholdersController < ApplicationController
   def destroy
     @stakeholder.destroy
     respond_to do |format|
-      format.html { redirect_to stakeholders_url, notice: 'Stakeholder was successfully destroyed.' }
+      format.html { redirect_to stakeholders_url, notice: 'User deleted.' }
       format.json { head :no_content }
     end
   end
@@ -66,6 +68,21 @@ class StakeholdersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_stakeholder
       @stakeholder = Stakeholder.find(params[:id])
+    end
+
+    # Confirms a logged-in user. If not, redirects to login page.
+    def logged_in_user
+      unless logged_in?
+        store_location # store where the user was going to go (redirects them to it after they log in)
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
+    end
+
+    # Prevents logged in users from editing other users' profiles. Redirects to donations.
+    def correct_user
+      @stakeholder = Stakeholder.find(params[:id])
+      redirect_to(donations_path) unless current_user?(@stakeholder)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

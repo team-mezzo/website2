@@ -2,6 +2,7 @@
 	<nav>
 		<ul>
 			<% if logged_in? %>
+				<li><%= link_to "Donations", donations_path %></li>
 				<li><%= link_to "Profile", current_user %></li>
 				<li><%= link_to "Log out", logout_path, method: "delete" %></li>
 			<% else %>

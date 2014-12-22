@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   		# log user in and redirect to user's donations page
   		log_in user
       params[:session][:remember_me] == '1' ? remember(user) : forget(user) # remember me checkbox
-  		redirect_to user
+  		redirect_back_or user # redirect to the page they were trying to access or (default) to their profile
   	else
   		flash.now[:danger] = 'Invalid email/password combination' # flash notice error message
     		render 'new' # try log in again
