@@ -7,15 +7,16 @@ class SessionsController < ApplicationController
   	if user && user.authenticate(params[:session][:password])
   		# log user in and redirect to user's donations page
   		log_in user
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user) # remember me checkbox
   		redirect_to user
-	else 
-		flash.now[:danger] = 'Invalid email/password combination' # flash notice error message
-  		render 'new' # try log in again
-	end
+  	else
+  		flash.now[:danger] = 'Invalid email/password combination' # flash notice error message
+    		render 'new' # try log in again
+  	end
   end
 
   def destroy
-  	log_out
+  	log_out if logged_in? # to prevent log out confusion on multiple browser tabs
   	redirect_to login_path
   end
 end

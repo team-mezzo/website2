@@ -43,6 +43,10 @@ a {
   }
 }
 
+section#body {
+  padding: 0 20px;
+}
+
 /* ==================================
 =========== NAVBAR HEADER ===========
 ===================================== */
@@ -71,6 +75,30 @@ nav {
         background-color: darken($charcoal, 10%);
         a { color: $lightGreen; }
       }
+    }
+  }
+}
+
+/* ==================================
+=============== FORMS ===============
+===================================== */
+// submit buttons
+div.actions {
+  .button {
+    cursor: pointer; cursor: hand; // change cursor on hover
+
+    display: inline-block;
+    border: none; // remove default button styling
+    border-radius: 2px;
+    margin: 10px 0;
+    padding: 5px 10px;
+
+    background-color: darken($lightGreen, 10%);
+    color: white;
+
+    &:hover, &.selected {
+      background-color: darken($lightGreen, 13%);
+      box-shadow: 0 -1px darken($lightGreen, 16%) inset;
     }
   }
 }

@@ -4,9 +4,33 @@ module SessionsHelper
 		session[:stakeholder_id] = user.id
 	end
 
-	# returns the current logged-in user (if any)
+	# remembers a user in a persistent session
+	def remember(user)
+		user.remember # creates new remember token and stores encrypted version in remember digest
+		cookies.permanent.signed[:stakeholder_id] = user.id # store encrypted user id
+		cookies.permanent[:remember_token] = user.remember_token # store new token
+	end
+
+	# forgets a persistent session (for use when logging out)
+	def forget(user)
+		user.forget # empty password digest column
+
+		# empty cookies
+		cookies.delete(:stakeholder_id)
+		cookies.delete(:remember_token)
+	end
+
+	# returns the current logged-in user or user corresponding to the remember token cookie
 	def current_user
-		@current_user ||= Stakeholder.find_by(id: session[:stakeholder_id])
+		if (user_id = session[:stakeholder_id]) # from current session
+			@current_user ||= Stakeholder.find_by(id: user_id)
+		elsif (user_id = cookies.signed[:stakeholder_id]) # from remember token cookies
+			user = Stakeholder.find_by(id: user_id)
+			if user && user.authenticated?(cookies[:remember_token])
+				log_in user
+				@current_user = user
+			end
+		end
 	end
 
 	# returns true if user is logged in, false otherwise
@@ -16,6 +40,7 @@ module SessionsHelper
 
 	# logs out given user and resets current user to nil
 	def log_out
+		forget(current_user)
 		session.delete(:stakeholder_id)
 		@current_user = nil
 	end

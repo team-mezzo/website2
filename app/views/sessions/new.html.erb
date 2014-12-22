@@ -11,8 +11,13 @@
 		<%= f.password_field :password %>
 	</div>
 
+	<%= f.label :remember_me, class: "checkbox inline" do %>
+	  <%= f.check_box :remember_me, checked: true %>
+	  <span>Remember me</span>
+	<% end %>
+
 	<div class="actions">
-		<%= f.submit "Log in" %>
+		<%= f.submit "Log in", :class => "button" %>
 	</div>
 <% end %>
 
