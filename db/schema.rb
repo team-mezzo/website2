@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141224165625) do
+ActiveRecord::Schema.define(version: 20141224204337) do
 
   create_table "donations", force: true do |t|
     t.datetime "pickup_start"
     t.datetime "pickup_end"
-    t.string   "status"
+    t.integer  "status",       limit: 255, default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "donor_id"

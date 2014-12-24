@@ -10,6 +10,10 @@ class Donation < ActiveRecord::Base
 	# VALIDATIONS
 	validates :donor_id, presence: true
 	validates :recipient_id, presence: true
+	validates :status, numericality: { only_integer: true,
+									   greater_than_or_equal_to: 0,
+									   less_than_or_equal_to: 4 },
+					   presence: true
 
 	def to_json
 		portion = self.food_portion
@@ -18,18 +22,28 @@ class Donation < ActiveRecord::Base
 		  :pickup_start => self.pickup_start,
 		  :pickup_end => self.pickup_end, 
 		  :status => self.status,
-		  :food_portion => portion } 
-		  # :raw_amount => portion.raw_amount,
-		  # :processed_amount => portion.processed_amount }
-		  # :description => portion.description,
-		  # :image_url => portion.image_url }
+		  :food_portion => portion }
 	end
 
+	# ============================================================================
+	# =========================== DONOR AND RECIPIENT ============================
+	# ============================================================================
 	def donor_name
 		Stakeholder.find_by(id: self.donor_id).business_name
 	end
 
 	def recipient_name
 		Stakeholder.find_by(id: self.recipient_id).business_name
+	end
+
+	# ============================================================================
+	# ================================= STATUS ===================================
+	# ============================================================================
+	def Donation.possible_statuses
+		["unitiated", "donation accepted", "driver left", "driver arrived", "donation complete"]
+	end
+
+	def status_string
+		Donation.possible_statuses[self.status]
 	end
 end
