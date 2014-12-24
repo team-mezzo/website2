@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141221080927) do
+ActiveRecord::Schema.define(version: 20141224165625) do
 
   create_table "donations", force: true do |t|
     t.datetime "pickup_start"
@@ -19,11 +19,8 @@ ActiveRecord::Schema.define(version: 20141221080927) do
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "donors", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "donor_id"
+    t.integer  "recipient_id"
   end
 
   create_table "food_portions", force: true do |t|
@@ -36,21 +33,15 @@ ActiveRecord::Schema.define(version: 20141221080927) do
     t.integer  "donation_id"
   end
 
-  create_table "recipients", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "stakeholders", force: true do |t|
     t.string   "business_name"
     t.string   "manager_name"
     t.string   "email"
-    t.integer  "loginable_id"
-    t.string   "loginable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_digest"
+    t.string   "role"
   end
 
   add_index "stakeholders", ["email"], name: "index_stakeholders_on_email", unique: true

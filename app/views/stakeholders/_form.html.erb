@@ -12,6 +12,11 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :business_name, "Business/Organization Name:" %><br>
+    <%= f.text_field :business_name %>
+  </div>  
+
+  <div class="field">
     <%= f.label :email, "Email:" %><br>
     <%= f.text_field :email %>
   </div>
@@ -26,7 +31,15 @@
     <%= f.password_field :password_confirmation %>
   </div>
 
+  <div class="field">
+    <%= f.label :role, "I am a:" %><br>
+    <%= f.radio_button :role, 'donor' %> 
+    <%= label :role_donor, 'business (donor)' %>
+    <%= f.radio_button :role, 'recipient' %>
+    <%= label :role_recipient, 'organization (recipient)' %>
+  </div>
+
   <div class="actions">
-    <%= f.submit "Create my account" %>
+    <%= f.submit "Create my account", :class => "button" %>
   </div>
 <% end %>

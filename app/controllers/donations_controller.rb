@@ -1,5 +1,7 @@
 class DonationsController < ApplicationController
-  before_action :set_donation, only: [:show, :edit, :update, :destroy]
+  before_action :set_donation,   only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :donor_user,     only: [:new, :create, :edit, :update, :destroy]
 
   # GET /donations
   # GET /donations.json
@@ -33,6 +35,7 @@ class DonationsController < ApplicationController
   # GET /donations/new
   def new
     @donation = Donation.new
+    @recipients = Stakeholder.recipients # load all possible recipients
   end
 
   # GET /donations/1/edit
@@ -43,6 +46,7 @@ class DonationsController < ApplicationController
   # POST /donations.json
   def create
     @donation = Donation.new(donation_params)
+    @donation.donor_id = current_user.id # automatically set donor to current user
 
     respond_to do |format|
       if @donation.save
@@ -85,9 +89,26 @@ class DonationsController < ApplicationController
       @donation = Donation.find(params[:id])
     end
 
+    # Only donors are allowed to create and edit donations.
+    def donor_user
+      unless current_user.isDonor?
+        flash[:danger] = "Organizations cannot create or edit donations."
+        redirect_to(donations_path)
+      end
+    end
+
+    # Only logged in users are allowed to create and edit donations.
+    def logged_in_user
+      unless logged_in?
+        store_location # store where the user was going to go (redirects them to it after they log in)
+        flash[:danger] = "Please log in."
+        redirect_to login_url
+      end
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def donation_params
-      params.require(:donation).permit(:pickup_start, :pickup_end, :status, 
+      params.require(:donation).permit(:pickup_start, :pickup_end, :status, :donor_id, :recipient_id,
                                        food_portion_attributes: [:raw_amount, :processed_amount, :description, :image_url])
     end
 end

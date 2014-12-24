@@ -19,6 +19,10 @@
     <%= f.label :pickup_end %><br>
     <%= f.datetime_select :pickup_end, :ampm => true, :minute_step => 10 %>
   </div>
+  <div class="field">
+    <%= f.label :recipient_id %><br>
+    <%= f.collection_select :recipient_id, @recipients, :id, :business_name %>
+  </div>
 
   <%= f.fields_for :food_portion do |builder| %>
     <div class="field">
