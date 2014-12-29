@@ -63,6 +63,8 @@ class DonationsController < ApplicationController
   # PATCH/PUT /donations/1
   # PATCH/PUT /donations/1.json
   def update
+    @recipients = Stakeholder.recipients # load all possible recipients
+    
     respond_to do |format|
       if @donation.update(donation_params)
         format.html { redirect_to @donation, notice: 'Donation was successfully updated.' }

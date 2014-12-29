@@ -10,10 +10,14 @@ class Donation < ActiveRecord::Base
 	# VALIDATIONS
 	validates :donor_id, presence: true
 	validates :recipient_id, presence: true
+	validates :pickup_start, presence: true, is_future_datetime: true
+	validates :pickup_end, presence: true, is_future_datetime: true
+	validate :is_valid_datetime_window
 	validates :status, numericality: { only_integer: true,
 									   greater_than_or_equal_to: 0,
 									   less_than_or_equal_to: 4 },
 					   presence: true
+
 
 	# ============================================================================
 	# ================================== JSON ====================================
@@ -46,7 +50,17 @@ class Donation < ActiveRecord::Base
 		["unitiated", "donation accepted", "driver left", "driver arrived", "donation complete"]
 	end
 
+	# Returns the string version of the donation's current status
 	def status_string
 		Donation.possible_statuses[self.status]
+	end
+
+	# ============================================================================
+	# ============================== VALIDATIONS =================================
+	# ============================================================================
+	def is_valid_datetime_window
+		if (pickup_start && pickup_end) && (pickup_start > pickup_end)
+			errors.add(:pickup_end, "must be later than pickup start")
+		end
 	end
 end
