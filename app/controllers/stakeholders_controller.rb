@@ -70,15 +70,6 @@ class StakeholdersController < ApplicationController
       @stakeholder = Stakeholder.find(params[:id])
     end
 
-    # Confirms a logged-in user. If not, redirects to login page.
-    def logged_in_user
-      unless logged_in?
-        store_location # store where the user was going to go (redirects them to it after they log in)
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-    end
-
     # Prevents logged in users from editing other users' profiles. Redirects to donations.
     def correct_user
       @stakeholder = Stakeholder.find(params[:id])

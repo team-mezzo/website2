@@ -15,14 +15,17 @@ class Donation < ActiveRecord::Base
 									   less_than_or_equal_to: 4 },
 					   presence: true
 
-	def to_json
-		portion = self.food_portion
-
+	# ============================================================================
+	# ================================== JSON ====================================
+	# ============================================================================
+	def as_json(options = nil)
 		{ :id => self.id,
 		  :pickup_start => self.pickup_start,
 		  :pickup_end => self.pickup_end, 
-		  :status => self.status,
-		  :food_portion => portion }
+		  :status => self.status_string.camelize(:lower), # camelcase version of status string
+		  :food_portion => self.food_portion,
+		  :donor_id => self.donor_id,
+		  :recipient_id => self.recipient_id }
 	end
 
 	# ============================================================================

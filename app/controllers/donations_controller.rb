@@ -6,17 +6,17 @@ class DonationsController < ApplicationController
   # GET /donations
   # GET /donations.json
   def index
-    @donations = Donation.all
+    # fetch the appropriate donations and order by date (new to old)
+    if logged_in?
+      @donations = current_user.donations.order(pickup_start: :desc)
+    else
+      @donations = Donation.all.order(pickup_start: :desc)
+    end
 
     # return json object
     respond_to do |format|
       format.html # index.html.erb
-      format.json { 
-        @donations.each do |donation|
-          # TODO: ONLY RETURNS FIRST DONATION. IF REMOVE AND RETURN, GET DOUBLE RENDER ERROR
-          render json: donation.to_json and return 
-        end
-      }
+      format.json { render json: @donations.to_json }
     end
   end
 
@@ -40,6 +40,7 @@ class DonationsController < ApplicationController
 
   # GET /donations/1/edit
   def edit
+    @recipients = Stakeholder.recipients # load all possible recipients
   end
 
   # POST /donations
@@ -94,15 +95,6 @@ class DonationsController < ApplicationController
       unless current_user.isDonor?
         flash[:danger] = "Organizations cannot create or edit donations."
         redirect_to(donations_path)
-      end
-    end
-
-    # Only logged in users are allowed to create and edit donations.
-    def logged_in_user
-      unless logged_in?
-        store_location # store where the user was going to go (redirects them to it after they log in)
-        flash[:danger] = "Please log in."
-        redirect_to login_url
       end
     end
 
