@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   root 'sessions#new' # site root page = login
 
   resources :donations
+  get 'donations/:id/accept' => 'donations#update_status', as: :accept_donation
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

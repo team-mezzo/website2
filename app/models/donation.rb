@@ -1,4 +1,8 @@
+include Statuses
+
 class Donation < ActiveRecord::Base
+	attr_accessor :status_object
+
 	# FOOD PORTION
 	has_one :food_portion, dependent: :destroy
 	accepts_nested_attributes_for :food_portion
@@ -17,7 +21,6 @@ class Donation < ActiveRecord::Base
 									   greater_than_or_equal_to: 0,
 									   less_than_or_equal_to: 4 },
 					   presence: true
-
 
 	# ============================================================================
 	# ================================== JSON ====================================
@@ -46,18 +49,24 @@ class Donation < ActiveRecord::Base
 	# ============================================================================
 	# ================================= STATUS ===================================
 	# ============================================================================
-	def Donation.possible_statuses
-		["unitiated", "donation accepted", "driver left", "driver arrived", "donation complete"]
+	def update_status
+		@status_object = Status.init(self.status) # make approriate object from current int
+		@status_object.update(self)
+		self.save
 	end
 
-	# Returns the string version of the donation's current status
 	def status_string
-		Donation.possible_statuses[self.status]
+		Status.status_strings[self.status]
+	end
+
+	def accepted?
+		return self.status == Statuses::ACCEPTED
 	end
 
 	# ============================================================================
 	# ============================== VALIDATIONS =================================
 	# ============================================================================
+	# ensures that pickup time window is valid (end is after or equal to start)
 	def is_valid_datetime_window
 		if (pickup_start && pickup_end) && (pickup_start > pickup_end)
 			errors.add(:pickup_end, "must be later than pickup start")

@@ -1,3 +1,5 @@
+require 'status'
+
 class DonationsController < ApplicationController
   before_action :set_donation,   only: [:show, :edit, :update, :destroy]
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
@@ -48,6 +50,7 @@ class DonationsController < ApplicationController
   def create
     @donation = Donation.new(donation_params)
     @donation.donor_id = current_user.id # automatically set donor to current user
+    @recipients = Stakeholder.recipients # load all possible recipients
 
     respond_to do |format|
       if @donation.save
@@ -64,7 +67,7 @@ class DonationsController < ApplicationController
   # PATCH/PUT /donations/1.json
   def update
     @recipients = Stakeholder.recipients # load all possible recipients
-    
+
     respond_to do |format|
       if @donation.update(donation_params)
         format.html { redirect_to @donation, notice: 'Donation was successfully updated.' }
@@ -84,6 +87,12 @@ class DonationsController < ApplicationController
       format.html { redirect_to donations_url, notice: 'Donation was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def update_status
+    @donation = Donation.find(params[:id])
+    @donation.update_status
+    redirect_to donations_url
   end
 
   private
