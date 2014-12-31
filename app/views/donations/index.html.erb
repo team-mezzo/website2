@@ -19,7 +19,7 @@
         <td><%= link_to 'Show', donation %></td>
         <td><%= link_to 'Edit', edit_donation_path(donation) %></td>
         <td><%= link_to 'Destroy', donation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% if current_user.isRecipient? %>
+        <% if current_user && current_user.isRecipient? %>
           <% if donation.accepted? %>
             <td>Accepted</td>
           <% else %>
